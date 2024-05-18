@@ -1,3 +1,7 @@
+<?php
+    ob_start();
+    // include header.php file
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,11 +34,15 @@
 <style>
   
   
-
-   /* Global Styles */
+/* Global Styles */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
+    background: #FFF3CF;
+    background-image: url("https://i.postimg.cc/y6S60tTV/cuadrado.png");
+    background-size: 280px; 
+
+
 }
 
 .text-success {
@@ -67,7 +75,6 @@ body {
 /* Navbar Icon Styles */
 .nav-icon {
     font-size: 20px;
-    margin-left: 15px;
     color: #333333;
 }
 
@@ -82,6 +89,34 @@ body {
 
 .position-relative a:hover {
     color: #FFA500;
+}
+
+/* Search Bar Styles */
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    width: 0;
+    padding: 10px;
+    border: none;
+    outline: none;
+    transition: width 0.3s;
+    font-size: 16px;
+    height: 30px; /* Ensure consistent height */
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.nav-item:hover .search-input {
+    width: 200px;
+    margin-right: 10px;
 }
 
 /* Responsive Adjustments */
@@ -105,7 +140,6 @@ body {
     }
 }
 
-
 </style>
 
 <body>
@@ -124,20 +158,26 @@ body {
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Home</a>
+                            <a class="nav-link" href="index.php">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="shop.php">Shop</a>
+                            <a class="nav-link" href="#">Shop</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Contact</a>
                         </li>
                     </ul>
                     <div class="navbar-nav ml-auto">
-                        <a class="nav-item nav-link" href="#"><i class="fa-solid fa-magnifying-glass nav-icon"></i></a>
+                                    <div class="search-container">
+                            <div class="search-container">
+                        <input type="text" class="search-input" placeholder="Search...">
+                        <a class="nav-item nav-link" href="#">
+                            <i class="fa-solid fa-magnifying-glass nav-icon"></i>
+                        </a>
+                    </div>
                         <a class="nav-item nav-link" href="#"><i class="fa-solid fa-cart-arrow-down nav-icon"></i></a>
                         <a class="nav-item nav-link" href="login.php"><i class="fa-solid fa-user nav-icon"></i></a>
                     </div>
@@ -153,4 +193,46 @@ body {
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<main id="main-site">
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Search bar functionality
+        const searchIcon = document.querySelector('.nav-icon');
+        const searchInput = document.querySelector('.search-input');
+        const gridItems = document.querySelectorAll('.grid-item');
+
+        searchIcon.addEventListener('click', function() {
+            searchInput.focus();
+        });
+
+        searchInput.addEventListener('input', function() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+
+            gridItems.forEach(item => {
+                const itemName = item.querySelector('h6').textContent.toLowerCase();
+                if (itemName.includes(searchTerm)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        searchInput.addEventListener('blur', function() {
+            if (!searchInput.value) {
+                searchInput.style.width = '0';
+            }
+        });
+
+        searchInput.addEventListener('focus', function() {
+            searchInput.style.width = '200px';
+        });
+    });
+</script>
+
+<?php
+    include('item-shop.php');
+
+
+    // include footer.php file
+    include ('footer.php');
+?>
